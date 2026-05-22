@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# MCP / AI tooling
+.playwright-mcp/
+.playwright/
+
+# Reports & artifacts
+/reports/
+/allure-results/
+/allure-report/
+/screenshots/
+
+# Generated media artifacts
+/videos/
+/traces/
+
+# Local state / secrets
+state.json
+.env
+
+# Large binaries
+*.war
