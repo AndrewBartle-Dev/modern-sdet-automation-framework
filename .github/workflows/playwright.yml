@@ -5,6 +5,12 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -25,7 +31,7 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium
 
     - name: Start ParaBank
       run: docker compose up -d
@@ -51,9 +57,32 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
 
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+    - name: Generate Allure Report
+      if: always()
+      run: npx allure generate allure-results --clean -o allure-report
+
+    - name: Upload Playwright Report Artifact
+      if: always()
+      uses: actions/upload-artifact@v4
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+    - name: Upload Allure Report Artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-report
+        path: allure-report/
+        retention-days: 30
+
+    - name: Upload GitHub Pages Artifact
+      if: always() && github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: allure-report
+
+    - name: Deploy Allure Report to GitHub Pages
+      if: always() && github.ref == 'refs/heads/main'
+      uses: actions/deploy-pages@v4
