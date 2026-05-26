@@ -8,7 +8,12 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@azure/identity": "^4.13.1",
+    "@azure/playwright": "^1.1.5",
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
   }
 }
