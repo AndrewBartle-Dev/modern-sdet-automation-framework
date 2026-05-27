@@ -20,6 +20,8 @@ jobs:
     env:
       BASE_URL: https://eventhub.rahulshettyacademy.com
       API_BASE_URL: https://api.eventhub.rahulshettyacademy.com/api
+      TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
     steps:
     - uses: actions/checkout@v4
