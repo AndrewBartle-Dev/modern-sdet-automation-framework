@@ -1,3 +1,4 @@
+/*
 import { test, expect } from '@playwright/test';
 
 test.describe('Test group', () => {
@@ -5,3 +6,4 @@ test.describe('Test group', () => {
     // generate code here.
   });
 });
+*/
