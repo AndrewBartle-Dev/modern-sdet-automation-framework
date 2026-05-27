@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BASE_URL: http://localhost:8080/parabank
+      BASE_URL: https://eventhub.rahulshettyacademy.com
+      API_BASE_URL: https://api.eventhub.rahulshettyacademy.com/api
 
     steps:
     - uses: actions/checkout@v4
@@ -30,29 +31,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install Playwright Browsers
+    - name: Install Playwright Browser
       run: npx playwright install --with-deps chromium
-
-    - name: Start ParaBank
-      run: docker compose up -d
-
-    - name: Verify ParaBank Container
-      run: docker ps
-
-    - name: Wait for ParaBank
-      run: |
-        for i in {1..30}; do
-          if curl -s http://localhost:8080/parabank > /dev/null; then
-            echo "ParaBank is running"
-            exit 0
-          fi
-          echo "Waiting for ParaBank..."
-          sleep 5
-        done
-
-        echo "ParaBank did not start in time"
-        docker compose logs
-        exit 1
 
     - name: Run Playwright tests
       run: npx playwright test
