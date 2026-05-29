@@ -1,6 +1,0 @@
-services:
-  parabank:
-    image: parasoft/parabank:baseline
-    container_name: parabank
-    ports:
-      - "8080:8080"

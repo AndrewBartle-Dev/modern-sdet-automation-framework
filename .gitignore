@@ -2,8 +2,6 @@
 node_modules/
 
 # Playwright
-/test-results/
-/playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
@@ -17,6 +15,8 @@ node_modules/
 /allure-results/
 /allure-report/
 /screenshots/
+/playwright-report/
+/test-results/
 
 # Generated media artifacts
 /videos/
