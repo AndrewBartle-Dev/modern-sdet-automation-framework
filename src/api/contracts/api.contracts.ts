@@ -1,10 +1,15 @@
 // src/types/api.types.ts
 
+export type EventCategory = 'Conference' | 'Concert' | 'Sports' | 'Workshop' | 'Festival';
+
+export type BookingStatus = 'confirmed' | 'cancelled';
+
+
 export interface Event {
   id: number;
   title: string;
   description: string;
-  category: 'Conference' | 'Concert' | 'Sports' | 'Workshop' | 'Festival';
+  category: EventCategory;
   venue: string;
   city: string;
   eventDate: string;
@@ -24,7 +29,7 @@ export interface Booking {
   customerPhone: string;
   quantity: number;
   totalPrice: number;
-  status: 'confirmed' | 'cancelled';
+  status: BookingStatus;
   bookingRef: string;
   createdAt: string;
   updatedAt: string;
@@ -42,7 +47,7 @@ export interface PaginationMeta {
 export interface CreateEventPayload {
   title: string;
   description: string;
-  category: string;
+  category: EventCategory;
   venue: string;
   city: string;
   eventDate: string;
@@ -60,7 +65,7 @@ export interface CreateBookingPayload {
 }
 
 export interface EventsQueryParams {
-  category?: string;
+  category?: EventCategory;
   city?: string;
   search?: string;
   page?: number;
@@ -69,7 +74,7 @@ export interface EventsQueryParams {
 
 export interface BookingsQueryParams {
   eventId?: number;
-  status?: 'confirmed' | 'cancelled';
+  status?: BookingStatus;
   page?: number;
   limit?: number;
 }

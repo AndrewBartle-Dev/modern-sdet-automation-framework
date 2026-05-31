@@ -8,13 +8,14 @@ export const BookingSchema = {
   properties: {
     id:            { type: 'number' },
     eventId:       { type: 'number' },
+    userId:        { type: ['number', 'null'] },  // undocumented field
     customerName:  { type: 'string' },
     customerEmail: { type: 'string', format: 'email' },
     customerPhone: { type: 'string' },
     quantity:      { type: 'number', minimum: 1, maximum: 10 },
-    totalPrice:    { type: 'number' },
+    totalPrice:    { type: 'string' }, // API returns as string
     status:        { type: 'string', enum: ['confirmed', 'cancelled'] },
-    bookingRef:    { type: 'string', pattern: '^EVT-[A-Z0-9]{6}$' },
+    bookingRef:    { type: 'string', pattern: '^B-[A-Z0-9]{6}$' }, // actual pattern documentation is incorrect
     createdAt:     { type: 'string', format: 'date-time' },
     updatedAt:     { type: 'string', format: 'date-time' },
     event:         EventSchema,
