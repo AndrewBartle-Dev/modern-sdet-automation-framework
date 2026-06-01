@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","2548","get started link","chromium","2026-05-26","passed","2026-05-26","","example.spec.ts","",""
+"","1169","seed","chromium","2026-05-26","passed","2026-05-26","Test group","seed.spec.ts","",""
+"","2110","has title","chromium","2026-05-26","passed","2026-05-26","","example.spec.ts","",""
+"","3442","ParaBank homepage loads","chromium","2026-05-26","passed","2026-05-26","","smoke\parabank.spec.ts","",""

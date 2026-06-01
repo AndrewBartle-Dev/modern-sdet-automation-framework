@@ -2,7 +2,10 @@
   "name": "web-test-automation",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "k6:build": "esbuild tests/performance/**/*.perf.ts --bundle --outdir=dist/performance --platform=neutral --target=es2015 --external:k6 --external:k6/*",
+    "k6:run": "npm run k6:build && npx dotenv -e .env -- k6 run"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -11,11 +14,16 @@
     "@azure/identity": "^4.13.1",
     "@azure/playwright": "^1.1.5",
     "@playwright/test": "^1.60.0",
+    "@types/k6": "^2.0.0",
     "@types/node": "^25.9.1",
     "allure-commandline": "^2.42.0",
-    "allure-playwright": "^3.9.0"
+    "allure-playwright": "^3.9.0",
+    "dotenv-cli": "^11.0.0",
+    "esbuild": "^0.28.0"
   },
   "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "dotenv": "^17.4.2"
   }
 }
