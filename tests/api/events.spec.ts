@@ -6,8 +6,9 @@ import {
   EventResponseSchema,
   EventsListResponseSchema,
 } from "../../src/api/schemas/event.schema";
+import { EventCategory } from "../../src/api/contracts/api.contracts";
 
-test.describe("Events API", () => {
+test.describe("Events API", () => { 
   test.describe("GET /events", () => {
     test(
       "returns paginated event list with valid schema",
@@ -29,7 +30,7 @@ test.describe("Events API", () => {
       { tag: ["@api", "@regression"] },
       async ({ userClient }) => {
         const response = await userClient.events.getAll({
-          category: "Conference",
+          category: "Conference" as EventCategory,
         });
         const body = (await response.json()) as Record<string, any>;
 
@@ -108,7 +109,7 @@ test.describe("Events API", () => {
         const payload = {
           title: "Automation Test Event",
           description: "Created by automated test suite",
-          category: "Conference",
+          category: 'Conference' as EventCategory,
           venue: "Test Venue",
           city: "Bangalore",
           eventDate: "2027-01-15T09:00:00.000Z",
@@ -150,7 +151,7 @@ test.describe("Events API", () => {
         const created = await userClient.events.create({
           title: "Event To Update",
           description: "Will be updated",
-          category: "Workshop",
+          category: "Workshop" as EventCategory,
           venue: "Test Venue",
           city: "Mumbai",
           eventDate: "2027-02-15T09:00:00.000Z",
@@ -164,7 +165,7 @@ test.describe("Events API", () => {
         const response = await userClient.events.update(eventId, {
           title: "Updated Event Title",
           description: "Will be updated",
-          category: "Workshop",
+          category: "Workshop" as EventCategory,
           venue: "Test Venue",
           city: "Mumbai",
           eventDate: "2027-02-15T09:00:00.000Z",
@@ -187,7 +188,7 @@ test.describe("Events API", () => {
         const response = await userClient.events.update(999999, {
           title: "Ghost Event",
           description: "Does not exist",
-          category: "Conference",
+          category: "Conference" as EventCategory,
           venue: "Nowhere",
           city: "Nowhere",
           eventDate: "2027-01-15T09:00:00.000Z",
@@ -210,7 +211,7 @@ test.describe("Events API", () => {
         const created = await userClient.events.create({
           title: "Event To Delete",
           description: "Will be deleted",
-          category: "Festival",
+          category: "Festival" as EventCategory,
           venue: "Test Venue",
           city: "Chennai",
           eventDate: "2027-03-15T09:00:00.000Z",
@@ -236,7 +237,7 @@ test.describe("Events API", () => {
         const created = await userClient.events.create({
           title: "Event To Delete And Verify",
           description: "Will be deleted",
-          category: "Concert",
+          category: "Concert" as EventCategory,
           venue: "Test Venue",
           city: "Delhi",
           eventDate: "2027-04-15T09:00:00.000Z",
