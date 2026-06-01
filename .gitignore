@@ -28,3 +28,6 @@ state.json
 
 # Large binaries
 *.war
+
+# TypeScript build output
+dist/
