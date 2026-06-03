@@ -26,4 +26,8 @@ export class EventCardComponent {
   async bookEventByTitle(title: string): Promise<void> {
     await this.getBookNowButtonByTitle(title).click();
   }
+
+  async expectCardCountToBe(count: number): Promise<void> {
+  await expect(this.eventCards).toHaveCount(count);
+}
 }
