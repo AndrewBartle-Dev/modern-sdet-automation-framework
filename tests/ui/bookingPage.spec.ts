@@ -113,6 +113,9 @@ test.describe('Booking Page', () => {
 
   });
 
+    // TODO: confirmation panel locators need refinement — getConfirmationValue()
+    // is matching both the pre-submission price summary and post-submission
+    // confirmation panel due to shared CSS classes. Needs more specific scoping.
   test.describe('booking confirmation', () => {
 
     test('displays booking confirmation after successful submission',
@@ -128,19 +131,24 @@ test.describe('Booking Page', () => {
 
         const bookingPage = new BookingPage(authenticatedPage);
         await bookingPage.goto(TEST_EVENT_ID);
+        const formatCurrency = (amount: number) => `$${amount.toLocaleString()}`;
 
         await bookingPage.fillBookingForm(
           mockBookingResponse.confirmed.data.customerName,
           mockBookingResponse.confirmed.data.customerEmail,
           mockBookingResponse.confirmed.data.customerPhone,
         );
-
+        
+        await authenticatedPage.pause();
+        
         await bookingPage.submitBooking();
+
+        await authenticatedPage.pause();
 
         await bookingPage.verifyBookingConfirmed(
           mockBookingResponse.confirmed.data.customerName,
           mockBookingResponse.confirmed.data.quantity,
-          `$${mockBookingResponse.confirmed.data.totalPrice}`,
+          formatCurrency(mockBookingResponse.confirmed.data.totalPrice),
         );
       }
     );
