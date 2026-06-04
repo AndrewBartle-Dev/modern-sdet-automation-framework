@@ -150,7 +150,7 @@ test.describe('Bookings API', () => {
       async ({ userClient }) => {
         const response = await userClient.bookings.getAll();
         const body = await response.json() as Record<string, any>;
-
+        console.log('Bookings list response body:', body);
         expect(response.status()).toBe(200);
         validateSchema(BookingsListResponseSchema, body);
         expect(body.pagination.page).toBe(1);

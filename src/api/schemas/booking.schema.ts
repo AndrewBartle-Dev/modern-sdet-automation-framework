@@ -15,7 +15,7 @@ export const BookingSchema = {
     quantity:      { type: 'number', minimum: 1, maximum: 10 },
     totalPrice:    { type: 'string' }, // API returns as string
     status:        { type: 'string', enum: ['confirmed', 'cancelled'] },
-    bookingRef:    { type: 'string', pattern: '^B-[A-Z0-9]{6}$' }, // actual pattern documentation is incorrect
+    bookingRef:    { type: 'string', pattern: '^[A-Z]-[A-Z0-9]{6}$' }, // actual pattern documentation is incorrect
     createdAt:     { type: 'string', format: 'date-time' },
     updatedAt:     { type: 'string', format: 'date-time' },
     event:         EventSchema,
