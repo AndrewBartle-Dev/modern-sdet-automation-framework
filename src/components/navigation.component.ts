@@ -38,7 +38,7 @@ export class NavigationComponent {
     });
   }
 
-  userEmail(email: string): Locator {
+  getUserEmail(): Locator {
     return this.page.getByTestId("user-email-display");
   }
 
@@ -70,11 +70,15 @@ export class NavigationComponent {
     await expect(this.bookingsLink).toBeVisible();
     await expect(this.apiDocsLink).toBeVisible();
     await expect(this.adminButton).toBeVisible();
-    await expect(this.userEmail(email)).toBeVisible();
+    await expect(this.getUserEmail()).toHaveText(email);
     await expect(this.logoutButton).toBeVisible();
   }
 
   async logout(): Promise<void> {
     await this.logoutButton.click();
+  }
+
+  async goToEvents(): Promise<void> {
+    await this.eventsLink.click();
   }
 }

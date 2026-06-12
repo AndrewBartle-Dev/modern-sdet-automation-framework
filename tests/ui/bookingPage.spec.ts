@@ -11,9 +11,9 @@
  * JWTs server-side — a fake token would be rejected by the API.
  */
 
-import { type Page } from '@playwright/test';
-import { test, expect } from '../../src/fixtures/auth.fixture';
-import { BookingPage } from '../../src/pages/booking.page';
+import { type Page, expect } from '@playwright/test';
+import { test } from '../../src/fixtures/auth.fixture';
+import { BookingPage } from '../../src/pages/book-event.page';
 import { mockBookingEvent, mockBookingResponse } from '../../src/data/ui-test-mock-data/booking.mock';
 import { mockRoute } from '../../src/utils/route.utils';
 
@@ -113,9 +113,6 @@ test.describe('Booking Page', () => {
 
   });
 
-    // TODO: confirmation panel locators need refinement — getConfirmationValue()
-    // is matching both the pre-submission price summary and post-submission
-    // confirmation panel due to shared CSS classes. Needs more specific scoping.
   test.describe('booking confirmation', () => {
 
     test('displays booking confirmation after successful submission',
@@ -139,11 +136,7 @@ test.describe('Booking Page', () => {
           mockBookingResponse.confirmed.data.customerPhone,
         );
         
-        await authenticatedPage.pause();
-        
         await bookingPage.submitBooking();
-
-        await authenticatedPage.pause();
 
         await bookingPage.verifyBookingConfirmed(
           mockBookingResponse.confirmed.data.customerName,
@@ -170,17 +163,15 @@ test.describe('Booking Page', () => {
 
         const bookingPage = new BookingPage(authenticatedPage);
         await bookingPage.goto(TEST_EVENT_ID);
+        
 
         await bookingPage.fillBookingForm(
           'QA Automation User',
           'test@mockuser.com',
           '9876543210',
         );
-
         await bookingPage.submitBooking();
-
-        // TODO: add verifyBookingError() to BookingPage once we confirm
-        // what the UI renders for a failed booking submission
+        await bookingPage.verifySeatValidationError();
       }
     );
 

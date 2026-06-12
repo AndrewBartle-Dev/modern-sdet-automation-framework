@@ -30,4 +30,9 @@ export class EventCardComponent {
   async expectCardCountToBe(count: number): Promise<void> {
   await expect(this.eventCards).toHaveCount(count);
 }
+
+async verifyFirstEventCardVisible(): Promise<void> {
+  await expect(this.eventCards.first()).toBeVisible();
+}
+
 }

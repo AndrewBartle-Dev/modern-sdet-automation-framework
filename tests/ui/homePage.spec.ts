@@ -11,8 +11,8 @@
  * JWTs server-side — a fake token would be rejected by the API.
  */
 
-import { type Page } from '@playwright/test';
-import { test, expect } from '../../src/fixtures/auth.fixture';
+import { type Page, expect} from '@playwright/test';
+import { test } from '../../src/fixtures/auth.fixture';
 import { HomePage } from '../../src/pages/home.page';
 import { mockEvents, mockAuthMe } from '../../src/data/ui-test-mock-data/home.mock';
 import { mockRoute } from '../../src/utils/route.utils';

@@ -1,14 +1,15 @@
 // tests/api/bookings.spec.ts
-import { test, expect } from '../../src/fixtures/auth.fixture';
-import { ENV } from '../../src/config/env';
+import { test } from '../../src/fixtures/auth.fixture';
+import { expect} from "@playwright/test";
 import { validateSchema } from '../../src/api/validators/schema.validator';
 import { BookingResponseSchema, BookingsListResponseSchema } from '../../src/api/schemas/booking.schema';
 import { ErrorResponseSchema } from '../../src/api/schemas/auth.schema';
+import { EventHubUserClient } from '../../src/api/clients/eventHubUserClient';
 
 test.describe('Bookings API', () => {
 
   // helper to create a fresh event for booking tests
-  async function createTestEvent(userClient: any) {
+  async function createTestEvent(userClient: EventHubUserClient) {
     const response = await userClient.events.create({
       title: 'Bookable Test Event',
       description: 'Created for booking tests',
@@ -38,7 +39,6 @@ test.describe('Bookings API', () => {
           quantity: 2,
         });
         const body = await response.json() as Record<string, any>;
-        console.log('Booking creation response body:', body);
         expect(response.status()).toBe(201);
         validateSchema(BookingResponseSchema, body);
         expect(body.data.status).toBe('confirmed');
@@ -150,7 +150,6 @@ test.describe('Bookings API', () => {
       async ({ userClient }) => {
         const response = await userClient.bookings.getAll();
         const body = await response.json() as Record<string, any>;
-        console.log('Bookings list response body:', body);
         expect(response.status()).toBe(200);
         validateSchema(BookingsListResponseSchema, body);
         expect(body.pagination.page).toBe(1);
