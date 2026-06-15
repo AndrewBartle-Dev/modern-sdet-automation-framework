@@ -23,7 +23,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   /* Use 50% of available cores on CI for parallelism without overloading the runner */
-  workers: process.env.CI ? "50%" : undefined,
+  workers: process.env.CI ? 2 : undefined,
 
   /* Global test timeout */
   timeout: 30_000,
