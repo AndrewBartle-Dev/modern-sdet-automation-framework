@@ -3,6 +3,7 @@
 > A production-grade, enterprise-ready test automation framework built against the [EventHub](https://eventhub.rahulshettyacademy.com) practice application.
 
 ---
+![Modern SDET Automation Framework](docs/images/architecture-overview.png)
 
 ## Table of Contents
 
