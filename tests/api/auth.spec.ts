@@ -1,5 +1,6 @@
 // tests/api/auth.spec.ts
-import { test, expect } from '../../src/fixtures/auth.fixture';
+import { test } from '../../src/fixtures/auth.fixture';
+import { expect} from "@playwright/test";
 import { ENV } from '../../src/config/env';
 import { validateSchema } from '../../src/api/validators/schema.validator';
 import { LoginResponseSchema, MeResponseSchema, ErrorResponseSchema } from '../../src/api/schemas/auth.schema';
@@ -15,13 +16,11 @@ test.describe('Auth API', () => {
           data: { email: ENV.TEST_EMAIL, password: ENV.TEST_PASSWORD },
         });
         const body = await response.json() as Record<string, any>;
-        console.log('response body:', body);
         expect(response.status()).toBe(200);
         validateSchema(LoginResponseSchema, body);
         expect(body.success).toBe(true);
         expect(body.token).toBeTruthy();
         expect(body.user.email).toBe(ENV.TEST_EMAIL);
-        console.log('response body:', body);
       }
     );
 
@@ -36,7 +35,6 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(400);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
       }
     );
 
@@ -47,7 +45,6 @@ test.describe('Auth API', () => {
           data: { email: 'nobody@unknown.com', password: 'password123' },
         });
         const body = await response.json() as Record<string, any>;
-        console.log('response body:', body);
 
         //The documentation says this should return 404, but it actually returns 400. 
         //Either way, we want to validate the schema and error message.
@@ -69,7 +66,7 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(400);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
+
       }
     );
 
@@ -84,7 +81,6 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(400);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
       }
     );
 
@@ -99,7 +95,6 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(400);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
       }
     );
 
@@ -122,7 +117,6 @@ test.describe('Auth API', () => {
         expect(body.success).toBe(true);
         expect(body.user.email).toBe(email);
         expect(body.user.userId).toBe(id);
-        console.log('response body:', body);
       }
     );
 
@@ -135,7 +129,6 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(401);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
       }
     );
 
@@ -150,7 +143,6 @@ test.describe('Auth API', () => {
         expect(response.status()).toBe(401);
         validateSchema(ErrorResponseSchema, body);
         expect(body.success).toBe(false);
-        console.log('response body:', body);
       }
     );
 

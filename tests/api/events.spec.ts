@@ -1,6 +1,6 @@
 // tests/api/events.spec.ts
-import { test, expect } from "../../src/fixtures/auth.fixture";
-import { ENV } from "../../src/config/env";
+import { test } from "../../src/fixtures/auth.fixture";
+import { expect} from "@playwright/test";
 import { validateSchema } from "../../src/api/validators/schema.validator";
 import {
   EventResponseSchema,

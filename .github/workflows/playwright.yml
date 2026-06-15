@@ -2,7 +2,7 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [main, master, feature/eventhub-modern-framework]
+    branches: [main, master, feature/ui-e2e-tests]
   pull_request:
     branches: [main, master]
   workflow_dispatch:
@@ -67,7 +67,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox
 
       - name: Run UI tests
         run: npx playwright test --grep @ui
@@ -80,9 +80,61 @@ jobs:
           path: allure-results/
           retention-days: 7
 
+  e2e-tests:
+    name: E2E Tests
+    needs: ui-tests
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Run E2E tests
+        run: npx playwright test --grep @e2e
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-e2e
+          path: allure-results/
+          retention-days: 7
+
+  performance-tests:
+    name: Performance Tests
+    needs: e2e-tests
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Build and run performance tests
+        run: npm run k6:build && k6 run dist/performance/events.perf.js
+
   report:
     name: Publish Report
-    needs: [api-tests, ui-tests]
+    needs: [api-tests, ui-tests, e2e-tests, performance-tests]
     if: always() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
@@ -99,6 +151,13 @@ jobs:
         continue-on-error: true
         with:
           name: allure-results-ui
+          path: allure-results/
+
+      - name: Download E2E results
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-results-e2e
           path: allure-results/
 
       - name: Generate Allure Report
