@@ -24,6 +24,7 @@ node_modules/
 
 # Local state / secrets
 state.json
+auth-state.json
 .env
 
 # Large binaries

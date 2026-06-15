@@ -66,7 +66,7 @@ Before generating any test, read and apply all standards defined in:
 ```markdown file=specs/plan.md
    ### 1. Adding New Todos
    **Seed:** `tests/seed.spec.ts`
-   **Standards:** `docs/prompts/agent-standards.md`
+   **Standards:** `.github/agents/agent-standards.md`
 
    #### 1.1 Add Valid Todo
    **Steps:**

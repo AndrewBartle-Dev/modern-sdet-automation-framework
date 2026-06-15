@@ -7,6 +7,9 @@ import { ENV } from "./src/config/env";
 export default defineConfig({
   testDir: "./tests",
 
+  /* Global setup — authenticates once before the suite starts */
+  globalSetup: './global-setup.ts',
+
   /* Run tests in files in parallel */
   fullyParallel: true,
 
@@ -17,7 +20,7 @@ export default defineConfig({
 
   /* 1 retry on CI and locally — enough to rule out transient infrastructure issues
      without masking genuinely flaky tests */
-  retries: process.env.CI ? 1 : 1,
+  retries: process.env.CI ? 1 : 0,
 
   /* Use 50% of available cores on CI for parallelism without overloading the runner */
   workers: process.env.CI ? "50%" : undefined,

@@ -1,3 +1,4 @@
+// src/api/clients/eventHubUserClient.ts
 import { type APIRequestContext } from '@playwright/test';
 import { ENV } from '../../config/env';
 import { AuthService } from '../services/auth.service';
@@ -19,8 +20,8 @@ export class EventHubUserClient {
   private userEmail = '';
 
   constructor(private readonly request: APIRequestContext) {
-    this.auth     = new AuthService(request);
-    this.events   = new EventsService(request);
+    this.auth = new AuthService(request);
+    this.events = new EventsService(request);
     this.bookings = new BookingsService(request);
   }
 
@@ -28,27 +29,40 @@ export class EventHubUserClient {
    * Authenticates the client using credentials from ENV.
    * Reinitialises services with the auth token after login so all
    * subsequent requests include the Authorization header automatically.
-   * Called automatically by the userClient fixture.
+   * Called as a fallback when the cached token is missing or expired.
    */
   async authenticate(): Promise<void> {
     const { token, id, email } = await this.auth.login(
       ENV.TEST_EMAIL,
-      ENV.TEST_PASSWORD
+      ENV.TEST_PASSWORD,
     );
 
-    this.token     = token;
-    this.userId    = id;
+    this.token = token;
+    this.userId = id;
     this.userEmail = email;
 
-    // reinitialise services with token so every request is authenticated
-    this.events   = new EventsService(this.request, this.token);
+    this.events = new EventsService(this.request, this.token);
     this.bookings = new BookingsService(this.request, this.token);
   }
 
   /**
-   * Returns the JWT token acquired during authenticate().
+   * Hydrates the client from a cached auth state without hitting the API.
+   * Called by the fixture when a valid cached token is available.
+   * Reinitialises services with the token so all requests are authenticated.
+   */
+  authenticateWithToken(token: string, id: number, email: string): void {
+    this.token = token;
+    this.userId = id;
+    this.userEmail = email;
+
+    this.events = new EventsService(this.request, this.token);
+    this.bookings = new BookingsService(this.request, this.token);
+  }
+
+  /**
+   * Returns the JWT token acquired during authenticate() or authenticateWithToken().
    * Used by the authenticatedPage fixture to inject into localStorage.
-   * Throws if called before authenticate().
+   * Throws if called before authentication.
    */
   getAuthToken(): string {
     if (!this.token) throw new Error('Client is not authenticated.');
@@ -57,7 +71,7 @@ export class EventHubUserClient {
 
   /**
    * Returns the authenticated user's id and email.
-   * Throws if called before authenticate().
+   * Throws if called before authentication.
    */
   getAuthUser(): { id: number; email: string } {
     if (!this.userId) throw new Error('Client is not authenticated.');
