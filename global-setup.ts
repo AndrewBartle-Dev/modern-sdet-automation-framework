@@ -1,5 +1,5 @@
 // global-setup.ts
-import { chromium } from '@playwright/test';
+import { request as playwrightRequest } from '@playwright/test';
 import fs from 'fs';
 import { ENV } from './src/config/env';
 import { AuthService } from './src/api/services/auth.service';
@@ -11,15 +11,17 @@ const AUTH_STATE_PATH = 'auth-state.json';
  * Authenticates via the API and caches the token so fixtures
  * don't need to hit the login endpoint on every test.
  *
+ * Uses Playwright's standalone API request context — no browser needed.
+ * This means global-setup works in any CI job without requiring
+ * Playwright browsers to be installed.
+ *
  * On CI: stores token in environment variables — no file written to disk.
  * Locally: writes auth-state.json to the project root (git-ignored).
  */
 export default async function globalSetup(): Promise<void> {
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const request = context.request;
+  const context = await playwrightRequest.newContext();
 
-  const authService = new AuthService(request);
+  const authService = new AuthService(context);
 
   console.log('[global-setup] Authenticating test user...');
 
@@ -45,5 +47,5 @@ export default async function globalSetup(): Promise<void> {
     console.log(`[global-setup] Token cached to ${AUTH_STATE_PATH}`);
   }
 
-  await browser.close();
+  await context.dispose();
 }
