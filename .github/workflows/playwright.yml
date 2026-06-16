@@ -135,7 +135,7 @@ jobs:
   report:
     name: Publish Report
     needs: [api-tests, ui-tests, e2e-tests, performance-tests]
-    if: always() && github.ref == 'refs/heads/main'
+    if: always()
     runs-on: ubuntu-latest
 
     steps:
