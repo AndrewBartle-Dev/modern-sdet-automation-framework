@@ -79,7 +79,7 @@ EventHub is an event booking platform. This framework verifies that the applicat
 | [esbuild](https://esbuild.github.io) | Bundles TypeScript performance tests for k6 |
 | [Allure](https://allurereport.org) | Test reporting and history |
 | [GitHub Actions](https://github.com/features/actions) | CI/CD pipeline |
-| [Playwright MCP](https://playwright.dev/docs/mcp) | AI-driven browser interaction for test authoring |
+| [Playwright MCP](https://playwright.dev/docs/getting-started-mcp) | AI-driven browser interaction for test authoring |
 | [GitHub Copilot Agents](https://github.com/features/copilot) | Structured AI workflows for planning, generating, and healing tests |
 
 ---
