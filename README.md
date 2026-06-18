@@ -367,7 +367,7 @@ test('displays three featured event cards',
   }
 );
 ```
-
+![UI Test Flow](docs/images/ui-test-flow.png)
 ---
 
 ### E2E Tests
@@ -404,6 +404,7 @@ test('user can complete a booking and see the confirmation',
   }
 );
 ```
+![E2E Test Flow](docs/images/e2e-test-flow.png)
 ---
 
 ### Performance Tests
@@ -446,6 +447,7 @@ export default function (data: { token: string; eventId: number }) {
   sleep(1); // simulate realistic think time between requests
 }
 ```
+![Performance Test Lifecycle](docs/images/performance-lifecycle.png)
 ---
 
 ## Authentication Strategy
@@ -471,6 +473,7 @@ The `authenticatedPage` fixture injects the token into the browser's `localStora
 
 Without token caching, every test would make a login API call before starting. With 50+ tests this means 50+ login requests — slow, wasteful, and a source of flakiness if the sandbox API is unreliable. The global setup approach reduces this to a single login call per test run regardless of suite size.
 
+![Authentication Flow](docs/images/authentication-flow.png)
 ---
 
 ## AI-Assisted Testing
@@ -558,6 +561,7 @@ Ask GitHub Copilot in VS Code:
 
 If the agents are working correctly, Copilot should use the planner workflow to explore the application and generate a structured Markdown test plan.
 
+![AI-Assisted Testing](docs/images/ai-assisted-testing.png)
 ---
 
 ## Reporting
@@ -587,6 +591,7 @@ npx allure open allure-report
 
 On every push to `main`, the CI pipeline publishes the Allure report to GitHub Pages automatically. This gives the team a permanent, browsable test report without needing to run anything locally.
 
+![Reporting Pipeline](docs/images/reporting-pipeline.png)
 ---
 
 ## CI/CD Pipeline
@@ -623,6 +628,7 @@ The following secrets must be configured in your GitHub repository settings unde
 | `TEST_EMAIL` | Email address of the test account |
 | `TEST_PASSWORD` | Password of the test account |
 
+![CI/CD Pipeline](docs/images/cicd-pipeline.png)
 ---
 
 ## Troubleshooting
