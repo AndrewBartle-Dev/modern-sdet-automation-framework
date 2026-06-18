@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [main, master, feature/ui-e2e-tests]
+    branches: [main, 'feature/**']
   pull_request:
-    branches: [main, master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -135,7 +135,7 @@ jobs:
   report:
     name: Publish Report
     needs: [api-tests, ui-tests, e2e-tests, performance-tests]
-    if: always()
+    if: always() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
