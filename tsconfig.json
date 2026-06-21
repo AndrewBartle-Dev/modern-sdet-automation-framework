@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "node16",
+    "lib": ["ES2025"],
+    "types": ["node"],
+    "moduleResolution": "node16",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "global-setup.ts",
+    "playwright.config.ts",
+    "playwright.service.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/performance/**/*",
+    "tests/performance/**/*"
+  ]
+}
