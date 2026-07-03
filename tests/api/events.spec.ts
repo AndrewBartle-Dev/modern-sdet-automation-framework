@@ -9,6 +9,7 @@ import {
 import { EventCategory } from "../../src/api/contracts/api.contracts";
 
 test.describe("Events API", () => { 
+
   test.describe("GET /events", () => {
     test(
       "returns paginated event list with valid schema",
@@ -125,6 +126,7 @@ test.describe("Events API", () => {
         expect(body.data.title).toBe(payload.title);
         expect(body.data.availableSeats).toBe(payload.totalSeats);
         expect(body.message).toBe("Event created successfully");
+        await userClient.events.delete(body.data.id);
       },
     );
 
@@ -178,6 +180,7 @@ test.describe("Events API", () => {
         validateSchema(EventResponseSchema, body);
         expect(body.data.title).toBe("Updated Event Title");
         expect(body.message).toBe("Event updated successfully");
+        await userClient.events.delete(eventId);
       },
     );
 

@@ -74,27 +74,6 @@ export class HomePage {
     await this.page.goto('/');
   }
 
-  async verifyHomePageContent(): Promise<void> {
-    await expect(this.heroHeading).toBeVisible();
-    await expect(this.heroDescription).toBeVisible();
-    await expect(this.browseEventsLink).toBeVisible();
-    await expect(this.myBookingsHeroLink).toBeVisible();
-
-    await expect(this.featuredHeading).toBeVisible();
-    await expect(this.featuredSubtitle).toBeVisible();
-    await expect(this.viewAllEventsLink).toBeVisible();
-
-    await expect(this.ctaHeading).toBeVisible();
-    await expect(this.ctaDescription).toBeVisible();
-    await expect(this.exploreAllEventsButton).toBeVisible();
-  }
-
-  async verifyAuthenticatedHome(email: string): Promise<void> {
-    await this.navigation.verifyAuthenticatedNavigation(email);
-    await this.verifyHomePageContent();
-    await this.footer.verifyFooterVisible();
-  }
-
   async browseEvents(): Promise<void> {
     await this.browseEventsLink.click();
   }

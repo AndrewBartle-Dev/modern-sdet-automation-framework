@@ -33,23 +33,52 @@ test.describe('Home Page', () => {
       await setupRouteMocks(authenticatedPage);
     });
 
-    test('displays all home page content',
+    test('displays hero and featured sections',
       { tag: ['@smoke', '@ui', '@regression'] },
       async ({ authenticatedPage }) => {
         const homePage = new HomePage(authenticatedPage);
         await homePage.goto();
-        await homePage.verifyHomePageContent();
+        await expect(homePage.heroHeading).toBeVisible();
+        await expect(homePage.heroDescription).toBeVisible();
+        await expect(homePage.browseEventsLink).toBeVisible();
+        await expect(homePage.myBookingsHeroLink).toBeVisible();
+        await expect(homePage.featuredHeading).toBeVisible();
+        await expect(homePage.featuredSubtitle).toBeVisible();
+        await expect(homePage.viewAllEventsLink).toBeVisible();
+        await expect(homePage.ctaHeading).toBeVisible();
+        await expect(homePage.ctaDescription).toBeVisible();
+        await expect(homePage.exploreAllEventsButton).toBeVisible();
       }
     );
 
-    test('displays authenticated user email in navigation',
+    test('displays authenticated user details in navigation',
       { tag: ['@ui', '@regression'] },
       async ({ authenticatedPage }) => {
         const homePage = new HomePage(authenticatedPage);
         await homePage.goto();
-        await homePage.verifyAuthenticatedHome(
-          mockAuthMe.authenticatedUser.user.email,
-        );
+        const nav = homePage.navigation;
+        await expect(nav.navigation).toBeVisible();
+        await expect(nav.logoLink).toBeVisible();
+        await expect(nav.homeLink).toBeVisible();
+        await expect(nav.eventsLink).toBeVisible();
+        await expect(nav.bookingsLink).toBeVisible();
+        await expect(nav.apiDocsLink).toBeVisible();
+        await expect(nav.adminButton).toBeVisible();
+        await expect(nav.getUserEmail()).toHaveText(mockAuthMe.authenticatedUser.user.email);
+        await expect(nav.logoutButton).toBeVisible();
+      }
+    );
+
+    test('displays footer content',
+      { tag: ['@ui', '@regression'] },
+      async ({ authenticatedPage }) => {
+        const homePage = new HomePage(authenticatedPage);
+        await homePage.goto();
+        await expect(homePage.footer.footer).toBeVisible();
+        await expect(homePage.footer.academyHeading).toBeVisible();
+        await expect(homePage.footer.popularCoursesHeading).toBeVisible();
+        await expect(homePage.footer.hiringPlatformHeading).toBeVisible();
+        await expect(homePage.footer.practiceAppHeading).toBeVisible();
       }
     );
 
@@ -58,7 +87,9 @@ test.describe('Home Page', () => {
       async ({ authenticatedPage }) => {
         const homePage = new HomePage(authenticatedPage);
         await homePage.goto();
-        await homePage.navigation.verifyAdminMenuItemsVisible();
+        await homePage.navigation.openAdminMenu();
+        await expect(homePage.navigation.manageEventsMenuItem).toBeVisible();
+        await expect(homePage.navigation.manageBookingsMenuItem).toBeVisible();
       }
     );
 
@@ -75,9 +106,9 @@ test.describe('Home Page', () => {
       async ({ authenticatedPage }) => {
         const homePage = new HomePage(authenticatedPage);
         await homePage.goto();
-        await homePage.eventCards.verifyEventCardVisible('Tech Summit 2027');
-        await homePage.eventCards.verifyEventCardVisible('Monsoon Music Night');
-        await homePage.eventCards.verifyEventCardVisible('Dilli Diwali Mela');
+        await expect(homePage.eventCards.getEventCardByTitle('Tech Summit 2027')).toBeVisible();
+        await expect(homePage.eventCards.getEventCardByTitle('Monsoon Music Night')).toBeVisible();
+        await expect(homePage.eventCards.getEventCardByTitle('Dilli Diwali Mela')).toBeVisible();
       }
     );
 
@@ -102,8 +133,8 @@ test.describe('Home Page', () => {
         await setupRouteMocks(authenticatedPage, mockEvents.singleEvent);
         const homePage = new HomePage(authenticatedPage);
         await homePage.goto();
-        await homePage.eventCards.verifyEventCardVisible('Tech Summit 2027');
-        await homePage.eventCards.expectCardCountToBe(1);
+        await expect(homePage.eventCards.getEventCardByTitle('Tech Summit 2027')).toBeVisible();
+        await expect(homePage.eventCards.eventCards).toHaveCount(1);
       }
     );
 
@@ -115,7 +146,7 @@ test.describe('Home Page', () => {
         await homePage.goto();
         await expect(homePage.heroHeading).toBeVisible();
         await expect(homePage.ctaHeading).toBeVisible();
-        await homePage.eventCards.expectCardCountToBe(0);
+        await expect(homePage.eventCards.eventCards).toHaveCount(0);
       }
     );
 

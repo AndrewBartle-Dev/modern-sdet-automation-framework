@@ -22,8 +22,16 @@ test.describe('Login — E2E', () => {
     async ({ page }) => {
       const loginPage = new LoginPage(page);
       await loginPage.goto();
-      await loginPage.verifyLoginPageContent();
-      await loginPage.verifyLoginFormVisible();
+      await expect(loginPage.heroHeading).toBeVisible();
+      await expect(loginPage.heroDescription).toBeVisible();
+      await expect(loginPage.apiDocsLink).toBeVisible();
+      await expect(loginPage.appPreviewImage).toBeVisible();
+      await expect(loginPage.signInHeading).toBeVisible();
+      await expect(loginPage.signInSubtitle).toBeVisible();
+      await expect(loginPage.registerLink).toBeVisible();
+      await expect(loginPage.emailInput).toBeVisible();
+      await expect(loginPage.passwordInput).toBeVisible();
+      await expect(loginPage.signInButton).toBeVisible();
     }
   );
 
@@ -36,7 +44,16 @@ test.describe('Login — E2E', () => {
 
       const homePage = new HomePage(page);
       await expect(page).toHaveURL('/');
-      await homePage.verifyHomePageContent();
+      await expect(homePage.heroHeading).toBeVisible();
+      await expect(homePage.heroDescription).toBeVisible();
+      await expect(homePage.browseEventsLink).toBeVisible();
+      await expect(homePage.myBookingsHeroLink).toBeVisible();
+      await expect(homePage.featuredHeading).toBeVisible();
+      await expect(homePage.featuredSubtitle).toBeVisible();
+      await expect(homePage.viewAllEventsLink).toBeVisible();
+      await expect(homePage.ctaHeading).toBeVisible();
+      await expect(homePage.ctaDescription).toBeVisible();
+      await expect(homePage.exploreAllEventsButton).toBeVisible();
     }
   );
 
@@ -48,7 +65,16 @@ test.describe('Login — E2E', () => {
       await loginPage.login(ENV.TEST_EMAIL, ENV.TEST_PASSWORD);
 
       const homePage = new HomePage(page);
-      await homePage.navigation.verifyAuthenticatedNavigation(ENV.TEST_EMAIL);
+      const nav = homePage.navigation;
+      await expect(nav.navigation).toBeVisible();
+      await expect(nav.logoLink).toBeVisible();
+      await expect(nav.homeLink).toBeVisible();
+      await expect(nav.eventsLink).toBeVisible();
+      await expect(nav.bookingsLink).toBeVisible();
+      await expect(nav.apiDocsLink).toBeVisible();
+      await expect(nav.adminButton).toBeVisible();
+      await expect(nav.getUserEmail()).toHaveText(ENV.TEST_EMAIL);
+      await expect(nav.logoutButton).toBeVisible();
     }
   );
 

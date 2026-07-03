@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import { type Locator, type Page } from "@playwright/test";
 import { ENV } from "../config/env";
 import { NavigationComponent } from "../components/navigation.component";
 
@@ -97,7 +97,7 @@ export class BookingPage {
    * would be added to the confirmation panel elements in collaboration with the
    * development team.
    */
-  private getConfirmationValue(label: string): Locator {
+  getConfirmationValue(label: string): Locator {
     return this.page
       .locator("div.text-center.py-6")
       .locator("div.bg-indigo-50")
@@ -114,18 +114,6 @@ export class BookingPage {
     await this.page.goto(`${ENV.BASE_URL}/events/${eventId}`);
   }
 
-  async verifyBookingPageVisible(eventTitle: string): Promise<void> {
-    await expect(this.eventTitle(eventTitle)).toBeVisible();
-    await expect(this.aboutHeading).toBeVisible();
-    await expect(this.ticketsHeading).toBeVisible();
-    await expect(this.fullNameInput).toBeVisible();
-    await expect(this.emailInput).toBeVisible();
-    await expect(this.phoneInput).toBeVisible();
-    await expect(this.decrementQuantityButton).toBeVisible();
-    await expect(this.incrementQuantityButton).toBeVisible();
-    await expect(this.confirmBookingButton).toBeVisible();
-  }
-
   async fillBookingForm(
     fullName: string,
     email: string,
@@ -134,16 +122,6 @@ export class BookingPage {
     await this.fullNameInput.fill(fullName);
     await this.emailInput.fill(email);
     await this.phoneInput.fill(phone);
-  }
-
-  async verifyBookingFormValues(
-    fullName: string,
-    email: string,
-    phone: string,
-  ): Promise<void> {
-    await expect(this.fullNameInput).toHaveValue(fullName);
-    await expect(this.emailInput).toHaveValue(email);
-    await expect(this.phoneInput).toHaveValue(phone);
   }
 
   async getTicketCount(): Promise<number> {
@@ -164,37 +142,7 @@ export class BookingPage {
   }
 
   async submitBooking(): Promise<void> {
-    await expect(this.confirmBookingButton).toBeVisible();
-    await expect(this.confirmBookingButton).toBeEnabled();
     await this.confirmBookingButton.click();
-  }
-
-  /**
-   * Verifies the booking confirmation panel rendered correctly
-   * after a successful submission. The confirmation state renders
-   * inline — no redirect or modal.
-   */
-  async verifyBookingConfirmed(
-    customerName: string,
-    tickets: number,
-    total: string,
-  ): Promise<void> {
-    await expect(this.bookingConfirmedHeading).toBeVisible();
-    await expect(this.ticketsReservedText).toBeVisible();
-    await expect(this.bookingRefValue).toBeVisible();
-    await expect(this.getConfirmationValue("Customer")).toHaveText(
-      customerName,
-    );
-    await expect(this.getConfirmationValue("Tickets")).toHaveText(
-      tickets.toString(),
-    );
-    await expect(this.getConfirmationValue("Total")).toHaveText(total);
-    await expect(this.viewMyBookingsButton).toBeVisible();
-    await expect(this.browseMoreEventsButton).toBeVisible();
-  }
-
-  async verifySeatValidationError(): Promise<void> {
-    await expect(this.seatValidationError).toBeVisible();
   }
 
   /**

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2023",
     "module": "node16",
-    "lib": ["ES2025"],
+    "lib": ["ES2025", "DOM"],
     "types": ["node"],
     "moduleResolution": "node16",
     "esModuleInterop": true,

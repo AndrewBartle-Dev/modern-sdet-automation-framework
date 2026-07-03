@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NavigationComponent } from '../components/navigation.component';
 import { ConfirmDialogComponent } from '../components/confirm-dialog.component';
 
@@ -74,13 +74,6 @@ export class ManageEventsPage {
     await this.page.goto('/admin/events');
   }
 
-  async verifyManageEventsPageVisible(): Promise<void> {
-    await expect(this.pageHeading).toBeVisible();
-    await expect(this.allEventsHeading).toBeVisible();
-    await expect(this.titleInput).toBeVisible();
-    await expect(this.addEventButton).toBeVisible();
-  }
-
   getRowByTitle(title: string): Locator {
     return this.eventTableRows.filter({ hasText: title });
   }
@@ -119,14 +112,6 @@ export class ManageEventsPage {
     await this.addEventButton.click();
   }
 
-  async verifyValidationErrors(): Promise<void> {
-    await expect(this.venueRequiredError).toBeVisible();
-    await expect(this.dateRequiredError).toBeVisible();
-    await expect(this.priceRequiredError).toBeVisible();
-    await expect(this.cityRequiredError).toBeVisible();
-    await expect(this.seatsRequiredError).toBeVisible();
-  }
-
   async deleteEvent(title: string): Promise<void> {
     await this.getDeleteButtonForEvent(title).click();
     await this.confirmDialog.confirm();
@@ -134,14 +119,6 @@ export class ManageEventsPage {
 
   async editEvent(title: string): Promise<void> {
     await this.getEditButtonForEvent(title).click();
-  }
-
-  async verifyEventInTable(title: string): Promise<void> {
-    await expect(this.getRowByTitle(title)).toBeVisible();
-  }
-
-  async verifyEventNotInTable(title: string): Promise<void> {
-    await expect(this.getRowByTitle(title)).not.toBeVisible();
   }
 
   async getTableRowCount(): Promise<number> {

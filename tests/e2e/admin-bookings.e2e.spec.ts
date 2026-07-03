@@ -12,7 +12,7 @@
  */
 
 import { test } from '../../src/fixtures/auth.fixture';
-import { expect} from "@playwright/test";
+import { expect } from "@playwright/test";
 import { HomePage } from '../../src/pages/home.page';
 import { ManageBookingsPage } from '../../src/pages/manage-bookings.page';
 import { BookingDetailModal } from '../../src/components/booking-detail.modal';
@@ -49,7 +49,8 @@ test.describe('Admin — Manage Bookings E2E', () => {
       await expect(authenticatedPage).toHaveURL(/\/admin\/bookings/);
 
       const manageBookingsPage = new ManageBookingsPage(authenticatedPage);
-      await manageBookingsPage.verifyManageBookingsPageVisible();
+      await expect(manageBookingsPage.pageHeading).toBeVisible();
+      await expect(manageBookingsPage.statusFilter).toBeVisible();
     }
   );
 
@@ -69,16 +70,15 @@ test.describe('Admin — Manage Bookings E2E', () => {
 
       const manageBookingsPage = new ManageBookingsPage(authenticatedPage);
       await manageBookingsPage.goto();
-      await manageBookingsPage.verifyBookingInTable(bookingRef);
+      await expect(manageBookingsPage.getRowByRef(bookingRef)).toBeVisible();
       await manageBookingsPage.viewBooking(bookingRef);
 
       const modal = new BookingDetailModal(authenticatedPage);
-      await modal.verifyModalVisible(bookingRef);
-      await modal.verifyCustomerDetails({
-        name: CUSTOMER.name,
-        email: CUSTOMER.email,
-        phone: CUSTOMER.phone,
-      });
+      await expect(modal.dialog).toBeVisible();
+      await expect(modal.dialog.getByRole('heading', { name: `Booking — ${bookingRef}` })).toBeVisible();
+      await expect(modal.getCustomerName()).toHaveText(CUSTOMER.name);
+      await expect(modal.getCustomerEmail()).toHaveText(CUSTOMER.email);
+      await expect(modal.getCustomerPhone()).toHaveText(CUSTOMER.phone);
     }
   );
 
@@ -103,7 +103,7 @@ test.describe('Admin — Manage Bookings E2E', () => {
       // Cancelled via UI — no API cleanup needed
       createdBookingId = null;
 
-      await manageBookingsPage.verifyBookingNotInTable(bookingRef);
+      await expect(manageBookingsPage.getRowByRef(bookingRef)).not.toBeVisible();
     }
   );
 

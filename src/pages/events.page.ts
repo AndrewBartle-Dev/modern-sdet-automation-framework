@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NavigationComponent } from '../components/navigation.component';
 import { EventCardComponent } from '../components/event-card.component';
 
@@ -46,14 +46,6 @@ export class EventsPage {
     await this.page.goto('/events');
   }
 
-  async verifyEventsPageVisible(): Promise<void> {
-    await expect(this.pageHeading).toBeVisible();
-    await expect(this.pageSubtitle).toBeVisible();
-    await expect(this.searchInput).toBeVisible();
-    await expect(this.categorySelect).toBeVisible();
-    await expect(this.citySelect).toBeVisible();
-  }
-
   async searchFor(query: string): Promise<void> {
     await this.searchInput.fill(query);
   }
@@ -68,17 +60,5 @@ export class EventsPage {
 
   async clearSearch(): Promise<void> {
     await this.searchInput.clear();
-  }
-
-  async verifySearchInputValue(value: string): Promise<void> {
-    await expect(this.searchInput).toHaveValue(value);
-  }
-
-  async verifyCategoryFilterValue(value: string): Promise<void> {
-    await expect(this.categorySelect).toHaveValue(value);
-  }
-
-  async verifyCityFilterValue(value: string): Promise<void> {
-    await expect(this.citySelect).toHaveValue(value);
   }
 }

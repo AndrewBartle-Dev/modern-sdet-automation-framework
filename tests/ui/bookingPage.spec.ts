@@ -40,9 +40,16 @@ test.describe('Booking Page', () => {
         const bookingPage = new BookingPage(authenticatedPage);
         await bookingPage.goto(TEST_EVENT_ID);
 
-        await bookingPage.verifyBookingPageVisible(
-          mockBookingEvent.techSummit.data.title,
-        );
+        const title = mockBookingEvent.techSummit.data.title;
+        await expect(bookingPage.eventTitle(title)).toBeVisible();
+        await expect(bookingPage.aboutHeading).toBeVisible();
+        await expect(bookingPage.ticketsHeading).toBeVisible();
+        await expect(bookingPage.fullNameInput).toBeVisible();
+        await expect(bookingPage.emailInput).toBeVisible();
+        await expect(bookingPage.phoneInput).toBeVisible();
+        await expect(bookingPage.decrementQuantityButton).toBeVisible();
+        await expect(bookingPage.incrementQuantityButton).toBeVisible();
+        await expect(bookingPage.confirmBookingButton).toBeVisible();
       }
     );
 
@@ -78,11 +85,9 @@ test.describe('Booking Page', () => {
           '9876543210',
         );
 
-        await bookingPage.verifyBookingFormValues(
-          'QA Automation User',
-          'test@mockuser.com',
-          '9876543210',
-        );
+        await expect(bookingPage.fullNameInput).toHaveValue('QA Automation User');
+        await expect(bookingPage.emailInput).toHaveValue('test@mockuser.com');
+        await expect(bookingPage.phoneInput).toHaveValue('9876543210');
       }
     );
 
@@ -135,14 +140,23 @@ test.describe('Booking Page', () => {
           mockBookingResponse.confirmed.data.customerEmail,
           mockBookingResponse.confirmed.data.customerPhone,
         );
-        
+
         await bookingPage.submitBooking();
 
-        await bookingPage.verifyBookingConfirmed(
+        await expect(bookingPage.bookingConfirmedHeading).toBeVisible();
+        await expect(bookingPage.ticketsReservedText).toBeVisible();
+        await expect(bookingPage.bookingRefValue).toBeVisible();
+        await expect(bookingPage.getConfirmationValue('Customer')).toHaveText(
           mockBookingResponse.confirmed.data.customerName,
-          mockBookingResponse.confirmed.data.quantity,
+        );
+        await expect(bookingPage.getConfirmationValue('Tickets')).toHaveText(
+          mockBookingResponse.confirmed.data.quantity.toString(),
+        );
+        await expect(bookingPage.getConfirmationValue('Total')).toHaveText(
           formatCurrency(mockBookingResponse.confirmed.data.totalPrice),
         );
+        await expect(bookingPage.viewMyBookingsButton).toBeVisible();
+        await expect(bookingPage.browseMoreEventsButton).toBeVisible();
       }
     );
 
@@ -163,7 +177,6 @@ test.describe('Booking Page', () => {
 
         const bookingPage = new BookingPage(authenticatedPage);
         await bookingPage.goto(TEST_EVENT_ID);
-        
 
         await bookingPage.fillBookingForm(
           'QA Automation User',
@@ -171,7 +184,8 @@ test.describe('Booking Page', () => {
           '9876543210',
         );
         await bookingPage.submitBooking();
-        await bookingPage.verifySeatValidationError();
+
+        await expect(bookingPage.seatValidationError).toBeVisible();
       }
     );
 

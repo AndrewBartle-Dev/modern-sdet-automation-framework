@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NavigationComponent } from '../components/navigation.component';
 import { ConfirmDialogComponent } from '../components/confirm-dialog.component';
 
@@ -32,11 +32,6 @@ export class ManageBookingsPage {
     await this.page.goto('/admin/bookings');
   }
 
-  async verifyManageBookingsPageVisible(): Promise<void> {
-    await expect(this.pageHeading).toBeVisible();
-    await expect(this.statusFilter).toBeVisible();
-  }
-
   getRowByRef(bookingRef: string): Locator {
     return this.tableRows.filter({ hasText: bookingRef });
   }
@@ -67,25 +62,7 @@ export class ManageBookingsPage {
     await this.confirmDialog.dismiss();
   }
 
-  async verifyBookingInTable(bookingRef: string): Promise<void> {
-    await expect(this.getRowByRef(bookingRef)).toBeVisible();
-  }
-
-  async verifyBookingNotInTable(bookingRef: string): Promise<void> {
-    await expect(this.getRowByRef(bookingRef)).not.toBeVisible();
-  }
-
-  async verifyBookingStatus(bookingRef: string, status: string): Promise<void> {
-    await expect(this.getRowByRef(bookingRef).getByText(status)).toBeVisible();
-  }
-
   async getTotalBookingsCount(): Promise<number> {
     return this.tableRows.count();
-  }
-
-  async verifyTotalCountText(count: number): Promise<void> {
-    await expect(
-      this.page.getByText(new RegExp(`${count} total booking`)),
-    ).toBeVisible();
   }
 }
