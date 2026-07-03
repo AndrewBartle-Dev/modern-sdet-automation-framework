@@ -28,8 +28,16 @@ test.describe('Logout — E2E', () => {
       await expect(authenticatedPage).toHaveURL(/\/login/);
 
       const loginPage = new LoginPage(authenticatedPage);
-      await loginPage.verifyLoginPageContent();
-      await loginPage.verifyLoginFormVisible();
+      await expect(loginPage.heroHeading).toBeVisible();
+      await expect(loginPage.heroDescription).toBeVisible();
+      await expect(loginPage.apiDocsLink).toBeVisible();
+      await expect(loginPage.appPreviewImage).toBeVisible();
+      await expect(loginPage.signInHeading).toBeVisible();
+      await expect(loginPage.signInSubtitle).toBeVisible();
+      await expect(loginPage.registerLink).toBeVisible();
+      await expect(loginPage.emailInput).toBeVisible();
+      await expect(loginPage.passwordInput).toBeVisible();
+      await expect(loginPage.signInButton).toBeVisible();
     }
   );
 

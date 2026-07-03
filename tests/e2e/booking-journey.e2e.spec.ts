@@ -14,7 +14,7 @@
  */
 
 import { test } from '../../src/fixtures/auth.fixture';
-import { expect} from "@playwright/test";
+import { expect } from "@playwright/test";
 import { HomePage } from '../../src/pages/home.page';
 import { EventsPage } from '../../src/pages/events.page';
 import { BookingPage } from '../../src/pages/book-event.page';
@@ -49,14 +49,27 @@ test.describe('Booking Journey — E2E', () => {
       const homePage = new HomePage(authenticatedPage);
       await homePage.goto();
 
-      await homePage.verifyHomePageContent();
-      await homePage.eventCards.verifyFirstEventCardVisible();
+      await expect(homePage.heroHeading).toBeVisible();
+      await expect(homePage.heroDescription).toBeVisible();
+      await expect(homePage.browseEventsLink).toBeVisible();
+      await expect(homePage.myBookingsHeroLink).toBeVisible();
+      await expect(homePage.featuredHeading).toBeVisible();
+      await expect(homePage.featuredSubtitle).toBeVisible();
+      await expect(homePage.viewAllEventsLink).toBeVisible();
+      await expect(homePage.ctaHeading).toBeVisible();
+      await expect(homePage.ctaDescription).toBeVisible();
+      await expect(homePage.exploreAllEventsButton).toBeVisible();
+      await expect(homePage.eventCards.eventCards.first()).toBeVisible();
 
       await homePage.navigation.goToEvents();
       await expect(authenticatedPage).toHaveURL(/\/events/);
 
       const eventsPage = new EventsPage(authenticatedPage);
-      await eventsPage.verifyEventsPageVisible();
+      await expect(eventsPage.pageHeading).toBeVisible();
+      await expect(eventsPage.pageSubtitle).toBeVisible();
+      await expect(eventsPage.searchInput).toBeVisible();
+      await expect(eventsPage.categorySelect).toBeVisible();
+      await expect(eventsPage.citySelect).toBeVisible();
     }
   );
 
@@ -70,7 +83,15 @@ test.describe('Booking Journey — E2E', () => {
 
       const bookingPage = new BookingPage(authenticatedPage);
       await expect(authenticatedPage).toHaveURL(/\/events\/\d+/);
-      await bookingPage.verifyBookingPageVisible(DILLI_DIWALI);
+      await expect(bookingPage.eventTitle(DILLI_DIWALI)).toBeVisible();
+      await expect(bookingPage.aboutHeading).toBeVisible();
+      await expect(bookingPage.ticketsHeading).toBeVisible();
+      await expect(bookingPage.fullNameInput).toBeVisible();
+      await expect(bookingPage.emailInput).toBeVisible();
+      await expect(bookingPage.phoneInput).toBeVisible();
+      await expect(bookingPage.decrementQuantityButton).toBeVisible();
+      await expect(bookingPage.incrementQuantityButton).toBeVisible();
+      await expect(bookingPage.confirmBookingButton).toBeVisible();
     }
   );
 
@@ -84,7 +105,15 @@ test.describe('Booking Journey — E2E', () => {
       const bookingPage = new BookingPage(authenticatedPage);
       await bookingPage.fillBookingForm(CUSTOMER.name, CUSTOMER.email, CUSTOMER.phone);
       await bookingPage.submitBooking();
-      await bookingPage.verifyBookingConfirmed(CUSTOMER.name, 1, '$300');
+
+      await expect(bookingPage.bookingConfirmedHeading).toBeVisible();
+      await expect(bookingPage.ticketsReservedText).toBeVisible();
+      await expect(bookingPage.bookingRefValue).toBeVisible();
+      await expect(bookingPage.getConfirmationValue('Customer')).toHaveText(CUSTOMER.name);
+      await expect(bookingPage.getConfirmationValue('Tickets')).toHaveText('1');
+      await expect(bookingPage.getConfirmationValue('Total')).toHaveText('$300');
+      await expect(bookingPage.viewMyBookingsButton).toBeVisible();
+      await expect(bookingPage.browseMoreEventsButton).toBeVisible();
 
       // Capture ID for cleanup
       const ref = await bookingPage.getBookingRef();
@@ -116,8 +145,9 @@ test.describe('Booking Journey — E2E', () => {
       await expect(authenticatedPage).toHaveURL(/\/bookings/);
 
       const myBookingsPage = new MyBookingsPage(authenticatedPage);
-      await myBookingsPage.verifyMyBookingsPageVisible();
-      await myBookingsPage.verifyBookingCardVisible(ref);
+      await expect(myBookingsPage.pageHeading).toBeVisible();
+      await expect(myBookingsPage.pageSubtitle).toBeVisible();
+      await expect(myBookingsPage.getCardByRef(ref)).toBeVisible();
     }
   );
 
@@ -143,12 +173,16 @@ test.describe('Booking Journey — E2E', () => {
       await expect(authenticatedPage).toHaveURL(/\/bookings\/\d+/);
 
       const detailPage = new BookingDetailPage(authenticatedPage);
-      await detailPage.verifyBookingDetailPageVisible(DILLI_DIWALI);
-      await detailPage.verifyCustomerDetails({
-        name: CUSTOMER.name,
-        email: CUSTOMER.email,
-        phone: CUSTOMER.phone,
-      });
+      await expect(detailPage.eventTitle).toHaveText(DILLI_DIWALI);
+      await expect(detailPage.eventDetailsHeading).toBeVisible();
+      await expect(detailPage.customerDetailsHeading).toBeVisible();
+      await expect(detailPage.paymentSummaryHeading).toBeVisible();
+      await expect(detailPage.bookingInformationHeading).toBeVisible();
+      await expect(detailPage.cancelBookingButton).toBeVisible();
+      await expect(detailPage.backToMyBookingsButton).toBeVisible();
+      await expect(detailPage.getCustomerName()).toHaveText(CUSTOMER.name);
+      await expect(detailPage.getCustomerEmail()).toHaveText(CUSTOMER.email);
+      await expect(detailPage.getCustomerPhone()).toHaveText(CUSTOMER.phone);
     }
   );
 
@@ -172,7 +206,13 @@ test.describe('Booking Journey — E2E', () => {
       await myBookingsPage.viewDetailsForBooking(bookingRef);
 
       const detailPage = new BookingDetailPage(authenticatedPage);
-      await detailPage.verifyBookingDetailPageVisible(DILLI_DIWALI);
+      await expect(detailPage.eventTitle).toHaveText(DILLI_DIWALI);
+      await expect(detailPage.eventDetailsHeading).toBeVisible();
+      await expect(detailPage.customerDetailsHeading).toBeVisible();
+      await expect(detailPage.paymentSummaryHeading).toBeVisible();
+      await expect(detailPage.bookingInformationHeading).toBeVisible();
+      await expect(detailPage.cancelBookingButton).toBeVisible();
+      await expect(detailPage.backToMyBookingsButton).toBeVisible();
       //await authenticatedPage.pause();
       await detailPage.cancelBooking();
 
@@ -206,7 +246,7 @@ test.describe('Booking Journey — E2E', () => {
       createdBookingId = null;
 
       await expect(authenticatedPage).toHaveURL(/\/bookings/);
-      await myBookingsPage.verifyBookingCardNotPresent(bookingRef);
+      await expect(myBookingsPage.getCardByRef(bookingRef)).not.toBeVisible();
     }
   );
 

@@ -20,10 +20,11 @@ export default defineConfig({
 
   /* 1 retry on CI and locally — enough to rule out transient infrastructure issues
      without masking genuinely flaky tests */
-  retries: process.env.CI ? 1 : 0,
+  retries: process.env.CI ? 2 : 2,
 
-  /* Use 50% of available cores on CI for parallelism without overloading the runner */
-  workers: process.env.CI ? 2 : undefined,
+  /* Use 2 workers on CI for parallelism without overloading the runner */
+  /* At 2 workers the backend starts to get overloaded*/ 
+  workers: process.env.CI ? 2 : 2,
 
   /* Global test timeout */
   timeout: 30_000,

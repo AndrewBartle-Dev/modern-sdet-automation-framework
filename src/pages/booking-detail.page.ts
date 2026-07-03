@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NavigationComponent } from '../components/navigation.component';
 import { ConfirmDialogComponent } from '../components/confirm-dialog.component';
 
@@ -88,38 +88,6 @@ export class BookingDetailPage {
   getPricePerTicket(): Locator { return this.getDetailValue('Payment Summary', 'Price per ticket'); }
   getBookedOn(): Locator { return this.getDetailValue('Booking Information', 'Booked on'); }
   getBookingId(): Locator { return this.getDetailValue('Booking Information', 'Booking ID'); }
-
-  async verifyBookingDetailPageVisible(eventTitle: string): Promise<void> {
-    await expect(this.eventTitle).toHaveText(eventTitle);
-    await expect(this.eventDetailsHeading).toBeVisible();
-    await expect(this.customerDetailsHeading).toBeVisible();
-    await expect(this.paymentSummaryHeading).toBeVisible();
-    await expect(this.bookingInformationHeading).toBeVisible();
-    await expect(this.cancelBookingButton).toBeVisible();
-    await expect(this.backToMyBookingsButton).toBeVisible();
-  }
-
-  async verifyEventDetails(details: {
-    event: string;
-    category: string;
-    venue: string;
-    city: string;
-  }): Promise<void> {
-    await expect(this.getEventName()).toHaveText(details.event);
-    await expect(this.getEventCategory()).toHaveText(details.category);
-    await expect(this.getEventVenue()).toHaveText(details.venue);
-    await expect(this.getEventCity()).toHaveText(details.city);
-  }
-
-  async verifyCustomerDetails(details: {
-    name: string;
-    email: string;
-    phone: string;
-  }): Promise<void> {
-    await expect(this.getCustomerName()).toHaveText(details.name);
-    await expect(this.getCustomerEmail()).toHaveText(details.email);
-    await expect(this.getCustomerPhone()).toHaveText(details.phone);
-  }
 
   async goBackToMyBookings(): Promise<void> {
     await this.backToMyBookingsButton.click();

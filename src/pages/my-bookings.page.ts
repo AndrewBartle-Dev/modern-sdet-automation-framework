@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NavigationComponent } from '../components/navigation.component';
 import { ConfirmDialogComponent } from '../components/confirm-dialog.component';
 
@@ -39,11 +39,6 @@ export class MyBookingsPage {
 
   async goto(): Promise<void> {
     await this.page.goto('/bookings');
-  }
-
-  async verifyMyBookingsPageVisible(): Promise<void> {
-    await expect(this.pageHeading).toBeVisible();
-    await expect(this.pageSubtitle).toBeVisible();
   }
 
   /**
@@ -92,20 +87,6 @@ export class MyBookingsPage {
   async dismissCancelDialog(bookingRef: string): Promise<void> {
     await this.getCancelButtonForCard(bookingRef).click();
     await this.confirmDialog.dismiss();
-  }
-
-  async verifyBookingCardVisible(bookingRef: string): Promise<void> {
-    await expect(this.getCardByRef(bookingRef)).toBeVisible();
-  }
-
-  async verifyBookingCardNotPresent(bookingRef: string): Promise<void> {
-    await expect(this.getCardByRef(bookingRef)).not.toBeVisible();
-  }
-
-  async verifyBookingStatus(bookingRef: string, status: string): Promise<void> {
-    await expect(
-      this.getCardByRef(bookingRef).getByText(status),
-    ).toBeVisible();
   }
 
   async getBookingCardCount(): Promise<number> {

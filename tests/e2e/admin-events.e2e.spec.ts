@@ -47,7 +47,10 @@ test.describe('Admin — Manage Events E2E', () => {
       await expect(authenticatedPage).toHaveURL(/\/admin\/events/);
 
       const manageEventsPage = new ManageEventsPage(authenticatedPage);
-      await manageEventsPage.verifyManageEventsPageVisible();
+      await expect(manageEventsPage.pageHeading).toBeVisible();
+      await expect(manageEventsPage.allEventsHeading).toBeVisible();
+      await expect(manageEventsPage.titleInput).toBeVisible();
+      await expect(manageEventsPage.addEventButton).toBeVisible();
     }
   );
 
@@ -59,7 +62,7 @@ test.describe('Admin — Manage Events E2E', () => {
 
       await manageEventsPage.fillNewEventForm(TEST_EVENT);
       await manageEventsPage.submitNewEvent();
-      await manageEventsPage.verifyEventInTable(TEST_EVENT.title);
+      await expect(manageEventsPage.getRowByTitle(TEST_EVENT.title)).toBeVisible();
 
       // Capture ID for cleanup — get the created event from the API
       const response = await userClient.events.getAll({ search: TEST_EVENT.title });
@@ -87,9 +90,9 @@ test.describe('Admin — Manage Events E2E', () => {
 
       const manageEventsPage = new ManageEventsPage(authenticatedPage);
       await manageEventsPage.goto();
-      await manageEventsPage.verifyEventInTable(TEST_EVENT.title);
+      await expect(manageEventsPage.getRowByTitle(TEST_EVENT.title)).toBeVisible();
       await manageEventsPage.deleteEvent(TEST_EVENT.title);
-      await manageEventsPage.verifyEventNotInTable(TEST_EVENT.title);
+      await expect(manageEventsPage.getRowByTitle(TEST_EVENT.title)).not.toBeVisible();
 
       // Deleted via UI — no API cleanup needed
       createdEventId = null;

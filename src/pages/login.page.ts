@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
@@ -57,21 +57,5 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.signInButton.click();
-  }
-
-  async verifyLoginPageContent(): Promise<void> {
-    await expect(this.heroHeading).toBeVisible();
-    await expect(this.heroDescription).toBeVisible();
-    await expect(this.apiDocsLink).toBeVisible();
-    await expect(this.appPreviewImage).toBeVisible();
-    await expect(this.signInHeading).toBeVisible();
-    await expect(this.signInSubtitle).toBeVisible();
-    await expect(this.registerLink).toBeVisible();
-  }
-
-  async verifyLoginFormVisible(): Promise<void> {
-    await expect(this.emailInput).toBeVisible();
-    await expect(this.passwordInput).toBeVisible();
-    await expect(this.signInButton).toBeVisible();
   }
 }
