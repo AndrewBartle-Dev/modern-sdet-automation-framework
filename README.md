@@ -669,8 +669,8 @@ If the **Retries** tab on the test shows multiple attempts, the test is genuinel
 
 ## Author
 
-**Your Name**
-- LinkedIn: [linkedin](https://linkedin.com/in/andrew-bartle-25a879402)
+**Andrew Bartle**
+- LinkedIn:https://linkedin.com/in/andrew-bartle-25a879402
 
 ---
 
